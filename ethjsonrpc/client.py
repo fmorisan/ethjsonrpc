@@ -5,6 +5,7 @@ import requests
 from requests.adapters import HTTPAdapter
 from requests.exceptions import ConnectionError as RequestsConnectionError
 from ethereum import utils
+from eth_utils import encode_hex, add_0x_prefix
 from ethereum.abi import encode_abi, decode_abi
 
 from ethjsonrpc.constants import BLOCK_TAGS, BLOCK_TAG_LATEST
@@ -98,7 +99,7 @@ class EthJsonRpc(object):
              types = sig[sig.find('(') + 1: sig.find(')')].split(',')
              encoded_params = encode_abi(types, args)
              code += encoded_params.encode('hex')
-        return self.eth_sendTransaction(from_address=from_, gas=gas, data=code)
+        return self.eth_sendTransaction(from_address=from_, gas=gas, data=add_0x_prefix(code))
 
     def get_contract_address(self, tx):
         '''
@@ -113,7 +114,7 @@ class EthJsonRpc(object):
         transaction (useful for reading data)
         '''
         data = self._encode_function(sig, args)
-        data_hex = data.encode('hex')
+        data_hex = encode_hex(data)
         response = self.eth_call(to_address=address, data=data_hex)
         return decode_abi(result_types, response[2:].decode('hex'))
 
@@ -125,7 +126,7 @@ class EthJsonRpc(object):
         gas = gas or self.DEFAULT_GAS_PER_TX
         gas_price = gas_price or self.DEFAULT_GAS_PRICE
         data = self._encode_function(sig, args)
-        data_hex = data.encode('hex')
+        data_hex = encode_hex(data)
         return self.eth_sendTransaction(from_address=from_, to_address=address, data=data_hex, gas=gas,
                                         gas_price=gas_price, value=value)
 
@@ -147,7 +148,7 @@ class EthJsonRpc(object):
 
         TESTED
         '''
-        data = str(data).encode('hex')
+        data = encode_hex(str(data))
         return self._call('web3_sha3', [data])
 
     def net_version(self):
