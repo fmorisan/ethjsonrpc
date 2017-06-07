@@ -726,7 +726,7 @@ class ParityEthJsonRpc(EthJsonRpc):
 
     def trace_filter(self, from_block=None, to_block=None, from_addresses=None, to_addresses=None):
         '''
-        https://github.com/ethcore/parity/wiki/JSONRPC-trace-module#trace_filter
+        https://github.com/paritytech/parity/wiki/JSONRPC-trace-module#trace_filter
 
         TESTED
         '''
@@ -749,7 +749,7 @@ class ParityEthJsonRpc(EthJsonRpc):
 
     def trace_get(self, tx_hash, positions):
         '''
-        https://github.com/ethcore/parity/wiki/JSONRPC-trace-module#trace_get
+        https://github.com/paritytech/parity/wiki/JSONRPC-trace-module#trace_get
 
         NEEDS TESTING
         '''
@@ -759,7 +759,7 @@ class ParityEthJsonRpc(EthJsonRpc):
 
     def trace_transaction(self, tx_hash):
         '''
-        https://github.com/ethcore/parity/wiki/JSONRPC-trace-module#trace_transaction
+        https://github.com/paritytech/parity/wiki/JSONRPC-trace-module#trace_transaction
 
         TESTED
         '''
@@ -767,9 +767,17 @@ class ParityEthJsonRpc(EthJsonRpc):
 
     def trace_block(self, block=BLOCK_TAG_LATEST):
         '''
-        https://github.com/ethcore/parity/wiki/JSONRPC-trace-module#trace_block
+        https://github.com/paritytech/parity/wiki/JSONRPC-trace-module#trace_block
 
         TESTED
         '''
         block = validate_block(block)
         return self._call('trace_block', [block])
+
+    def trace_rawTransaction(self, tx_raw, tracetype):
+        '''
+        https://github.com/paritytech/parity/wiki/JSONRPC-trace-module#trace_rawtransaction
+
+        NEEDS TESTING
+        '''
+        return self._call('trace_rawTransaction', [tx_raw, [tracetype]])
