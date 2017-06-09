@@ -67,6 +67,7 @@ class EthJsonRpc(object):
 
     def _encode_function(self, signature, param_values):
 
+        signature = signature.replace(' ', '')
         prefix = utils.big_endian_to_int(utils.sha3(signature)[:4])
 
         if signature.find('(') == -1:
@@ -75,7 +76,7 @@ class EthJsonRpc(object):
         if signature.find(')') - signature.find('(') == 1:
             return utils.encode_int(prefix)
 
-        types = signature[signature.find('(') + 1: signature.find(')')].replace(' ', '').split(',')
+        types = signature[signature.find('(') + 1: signature.find(')')].split(',')
         encoded_params = encode_abi(types, param_values)
         return utils.zpad(utils.encode_int(prefix), 4) + encoded_params
 
