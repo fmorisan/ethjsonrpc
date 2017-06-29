@@ -71,14 +71,14 @@ These examples assume the following simple Solidity contract:
 
    contract Example {
 
-       string s;
+       string foo;
 
-       function set_s(string new_s) {
-           s = new_s;
+       function set_foo(string new_foo) {
+           foo = new_foo;
        }
 
-       function get_s() returns (string) {
-           return s;
+       function get_foo() returns (string) {
+           return foo;
        }
    }
 
@@ -87,7 +87,7 @@ Compile it like this:
 
 .. code:: bash
 
-   $ solc --binary stdout example.sol
+   $ solc --bin --abi example.sol
 
 
 Setup
@@ -100,12 +100,11 @@ Setup
    >>> c = EthJsonRpc('127.0.0.1', 8545)
 
 
-Creating a contract on the blockchain
+Deploy contract to the blockchain
 `````````````````````````````````````
 
 .. code:: python
 
-   >>> # continued from above
    >>> contract_tx = c.create_contract(c.eth_coinbase(), compiled, gas=300000)
    >>> # wait here for the contract to be created when a new block is mined
    >>> contract_addr = c.get_contract_address(contract_tx)
@@ -119,7 +118,7 @@ Calling a contract function with a transaction (storing data)
 .. code:: python
 
    >>> # continued from above
-   >>> tx = c.call_with_transaction(c.eth_coinbase(), contract_addr, 'set_s(string)', ['Hello, world'])
+   >>> tx = c.call_with_transaction(c.eth_coinbase(), contract_addr, 'set_foo(string)', ['Hello, world'])
    >>> tx
    u'0x15bde63d79466e3db5169a913bb2069130ca387033d2ff2e29f4dfbef1bc6e0d'
 
@@ -130,10 +129,25 @@ Calling a contract function on the local blockchain (reading data)
 .. code:: python
 
    >>> # continued from above
-   >>> results = c.call(contract_addr, 'get_s()', [], ['string'])
+   >>> results = c.call(contract_addr, 'get_foo()', [], ['string'])
    >>> results
    ['Hello, world']
 
+
+Calling a transfer() method in ERC20 contract
+`````````````````````````````````````````````
+
+.. code:: python
+
+   >>> tx = c.call_with_transaction(c.eth_coinbase(), contract_addr, 'transfer(address, uint256)',['0xe38F16E3d3955f21Cbf0bD0b250112ca0720a2Df',10])
+
+Calling a balanceOf() method in ERC20 contract
+``````````````````````````````````````````````
+
+.. code:: python
+
+   >>> c.call(c.eth_coinbase(), 'balanceOf(address)', ['0xe38F16E3d3955f21Cbf0bD0b250112ca0720a2Df'], ['uint256'])
+   [10]
 
 Additional examples
 -------------------
@@ -221,9 +235,10 @@ Methods:
 * trace_get
 * trace_transaction
 * trace_block
+* trace_rawTransaction
 
 Reference
 ---------
 
 * https://github.com/ethereum/wiki/wiki/JSON-RPC
-* https://github.com/ethcore/parity/wiki/JSONRPC-trace-module
+* https://github.com/paritytech/parity/wiki/JSONRPC-trace-module
