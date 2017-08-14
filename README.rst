@@ -152,12 +152,14 @@ Calling a balanceOf() method in ERC20 contract
 Using Infura
 ------------
 
-If you want to use the [Infura](https://infura.io/#how-to) node, you need call the constructor this way:
+If you want to use the `Infura<https://infura.io/#how-to>`_ node, you need call the constructor this way:
 
 .. code:: Python
 
    >>> from ethjsonrpc import EthJsonRpc
    >>> c = EthJsonRpc('network.infura.io/YoUrInFuRaApIkEy', 443, tls=True)
+
+Remember to replace *YoUrInFuRaApIkEy* with your api key
 
 
 Additional examples
