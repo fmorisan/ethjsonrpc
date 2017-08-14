@@ -149,6 +149,17 @@ Calling a balanceOf() method in ERC20 contract
    >>> c.call(c.eth_coinbase(), 'balanceOf(address)', ['0xe38F16E3d3955f21Cbf0bD0b250112ca0720a2Df'], ['uint256'])
    [10]
 
+Using Infura
+------------
+
+If you want to use the [Infura](https://infura.io/#how-to) node, you need call the constructor this way:
+
+.. code:: Python
+
+   >>> from ethjsonrpc import EthJsonRpc
+   >>> c = EthJsonRpc('network.infura.io/YoUrInFuRaApIkEy', 443, tls=True)
+
+
 Additional examples
 -------------------
 
