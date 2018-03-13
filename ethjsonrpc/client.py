@@ -74,7 +74,7 @@ class EthJsonRpc(object):
             raise RuntimeError('Invalid function signature. Missing "(" and/or ")"...')
 
         if signature.find(')') - signature.find('(') == 1:
-            return utils.encode_int(prefix)
+            return utils.zpad(utils.encode_int(prefix), 4)))
 
         types = signature[signature.find('(') + 1: signature.find(')')].split(',')
         encoded_params = encode_abi(types, param_values)
